@@ -1,11 +1,26 @@
+from utils.url import UrlHandler
+
+
 class Settings:
-    DOWNLOAD_URL = "https://cloud.mail.ru/public/L1xB/nvgHGYJz5"
-    CURRENT_FILE_NAME = "testfile"
-    CURRENT_FILE_EXTENSION = "csv"  # only csv or json
+    def __init__(self, url: str, resource: str, file_name: str, file_extension: str):
+        self.__url = url
+        self.__resource = resource
+        self.__file_name = file_name
+        self.__file_extension = file_extension
 
-    @staticmethod
-    def get_file_path() -> str:
-        return Settings.CURRENT_FILE_NAME + '.' + Settings.CURRENT_FILE_EXTENSION
+        handler = UrlHandler(self.__url, self.__resource)
+
+        try:
+            self.__url = handler.hande_url()
+        except ValueError as e:
+            pass
+
+    def get_file_path(self) -> str:
+        return self.__file_name + '.' + self.__file_extension
+
+    def get_url(self) -> str:
+        return self.__url
 
 
-settings = Settings()
+settings = Settings("https://cloud.mail.ru/public/L1xB/nvgHGYJz5", "mail",
+                    "testfile", "csv")
