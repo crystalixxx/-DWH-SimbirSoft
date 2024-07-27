@@ -1,5 +1,5 @@
 from utils.download import DownloadFile
-from utils.parse_csv import Parser
+from utils.parse import Parser
 from config import settings
 
 if __name__ == '__main__':
