@@ -1,5 +1,6 @@
 import requests
 import re
+import csv
 
 from config import settings
 
@@ -20,8 +21,32 @@ def get_main_download_link(link):
     return None
 
 
+class DownloadFile:
+    def __init__(self, url, file_name):
+        self.__url = url
+        self.__file_name = file_name
+
+    def download_csv(self):
+        data = requests.get(self.__url)
+        decoded_data = data.content.decode('utf-8')
+
+        reader = csv.reader(decoded_data.splitlines(), delimiter=';', dialect='unix')
+        listed_reader = list(reader)
+
+        with open(self.__file_name, "w") as file:
+            for row in listed_reader:
+                file.write(",".join(row) + '\n')
+
+    def get_correct_downloader(self):
+        extension = self.__file_name.split('.')[-1]
+
+        if extension == 'csv':
+            self.download_csv()
+        else:
+            raise Exception("Sorry, but we can't to process this file type now")
+
+
 def download_file():
-    data = requests.get(get_main_download_link(settings.DOWNLOAD_URL))
-    with open(f"{settings.CURRENT_FILE_NAME}.{settings.CURRENT_FILE_EXTENSION}", 'wb') as file:
-        file.write(data.content)
+    downloader = DownloadFile(get_main_download_link(settings.DOWNLOAD_URL), settings.get_file_path())
+    downloader.get_correct_downloader()
 
