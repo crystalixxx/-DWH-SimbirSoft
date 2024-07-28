@@ -57,6 +57,4 @@ class Converter:
             if (primary_key is None) and (not is_null) and is_unique:
                 primary_key = idx
 
-        print(f"Primary Key is {primary_key}")
-        for key, value in self.__types.items():
-            print(key, f"type={value[0]}, is_nullable={value[1]}, is_unique={value[2]}")
+        return self.__types

@@ -1,38 +1,42 @@
 import requests
-import re
 import csv
 
-from config import settings
+from utils.database.core import DatabaseSender
+from utils.prepare.converter import Converter
 
 
 class DownloadFile:
-    __url = settings.get_url()
-    __file_name = settings.get_file_path()
+    def __init__(self, url: str, table_name: str, extension: str):
+        self.__url = url
+        self.__table_name = table_name
+        self.__extension = extension
 
-    @staticmethod
-    def download_csv():
-        data = requests.get(DownloadFile.__url)
+    def download_csv(self):
+        data = requests.get(self.__url)
         decoded_data = data.content.decode('utf-8')
 
         reader = csv.reader(decoded_data.splitlines(), delimiter=';', dialect='unix')
-        listed_reader = list(reader)
 
-        with open(DownloadFile.__file_name, "w") as file:
-            for row in listed_reader:
-                file.write(",".join(row) + '\n')
+        heading = next(reader)
 
-    @staticmethod
-    def download_json():
+        rows = []
+        for row in reader:
+            rows.append(row)
+
+        converter = Converter(heading, rows)
+        columns_info = converter.validate_types()
+
+        sender = DatabaseSender(self.__table_name, heading, rows, columns_info)
+        sender.create_table()
+
+    def download_json(self):
         pass
 
-    @staticmethod
-    def download():
-        extension = DownloadFile.__file_name.split('.')[-1]
-
-        if extension == 'csv':
-            DownloadFile.download_csv()
-        elif extension == 'json':
-            DownloadFile.download_json()
+    def download(self):
+        if self.__extension == 'csv':
+            self.download_csv()
+        elif self.__extension == 'json':
+            self.download_json()
         else:
             raise Exception("Sorry, but we can't to process this file type now")
 
