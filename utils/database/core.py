@@ -5,5 +5,5 @@ class DatabaseSender:
         self.__raws = raws
         self.__columns_info = columns_info
 
-    def create_table(self):
+    def create_record(self):
         print(f"Table with name {self.__table_name} created!")
