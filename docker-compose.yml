@@ -1,0 +1,14 @@
+name: postgresql
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_USER: "admin"
+      POSTGRES_DB: "postgres"
+    volumes:
+      - ./utils/database:/docker-entrypoint-initdb.d
+      - postgres_volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
