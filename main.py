@@ -1,6 +1,7 @@
 from utils.download.download import DownloadFile
 from utils.parse import Parser
 from utils.prepare.converter import Converter
+
 from argparse import ArgumentParser
 
 if __name__ == '__main__':
@@ -18,12 +19,15 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.command == 'create_table':
-        print("Created tables")
+        print("tables created")
     elif args.command == 'add_new_url':
-        print(f"url: {args.url}")
-        print(f"source: {args.source}")
-        print(f"name: {args.name}")
-        print(f"extension: {args.extension}")
+        downloader = DownloadFile(args.url, args.name, args.extension, args.source)
+        downloader.download_csv()
+
+        # print(f"url: {args.url}")
+        # print(f"source: {args.source}")
+        # print(f"name: {args.name}")
+        # print(f"extension: {args.extension}")
     else:
         parser.print_help()
 
