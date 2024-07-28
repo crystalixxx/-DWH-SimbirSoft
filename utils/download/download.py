@@ -14,9 +14,9 @@ class DownloadFile:
         self.__resource = resource
 
     def download_csv(self):
-        url_handler = UrlHandler(self.__url, self.__resource)
+        self.__url = UrlHandler(self.__url, self.__resource).hande_url()
 
-        data = requests.get(url_handler.hande_url())
+        data = requests.get(self.__url)
         decoded_data = data.content.decode('utf-8')
 
         reader = csv.reader(decoded_data.splitlines(), delimiter=';', dialect='unix')
@@ -27,20 +27,23 @@ class DownloadFile:
         for row in reader:
             rows.append(row)
 
-        converter = Converter(heading, rows)
-        columns_info = converter.validate_types()
-
-        sender = DatabaseSender(self.__table_name, heading, rows, columns_info)
-        sender.create_record()
+        return heading, rows
 
     def download_json(self):
         pass
 
     def download(self):
         if self.__extension == 'csv':
-            self.download_csv()
+            return self.download_csv()
         elif self.__extension == 'json':
-            self.download_json()
+            return self.download_json()
         else:
             raise Exception("Sorry, but we can't to process this file type now")
 
+    def recording(self):
+        heading, rows = self.download()
+        columns_info = Converter(heading, rows).convert_types()
+
+        sender = DatabaseSender((self.__url, self.__resource, self.__table_name, self.__extension), heading, rows,
+                                columns_info)
+        sender.create_record()

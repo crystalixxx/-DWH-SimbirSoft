@@ -1,6 +1,4 @@
 from utils.download.download import DownloadFile
-from utils.parse import Parser
-from utils.prepare.converter import Converter
 
 from argparse import ArgumentParser
 
@@ -22,7 +20,7 @@ if __name__ == '__main__':
         print("tables created")
     elif args.command == 'add_new_url':
         downloader = DownloadFile(args.url, args.name, args.extension, args.source)
-        downloader.download_csv()
+        downloader.recording()
 
         # print(f"url: {args.url}")
         # print(f"source: {args.source}")
