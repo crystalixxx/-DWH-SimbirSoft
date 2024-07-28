@@ -1,4 +1,4 @@
-from utils.url import UrlHandler
+from utils.download.url import UrlHandler
 
 
 class Settings:
