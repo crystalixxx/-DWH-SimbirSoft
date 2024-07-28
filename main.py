@@ -1,11 +1,29 @@
 from utils.download.download import DownloadFile
 from utils.parse import Parser
 from utils.prepare.converter import Converter
+from argparse import ArgumentParser
 
 if __name__ == '__main__':
-    DownloadFile.download()
-    columns, rows = Parser.parse()
+    parser = ArgumentParser()
+    subparsers = parser.add_subparsers(dest='command')
 
-    main = Converter(columns, rows)
-    main.validate_types()
+    parse_create = subparsers.add_parser('create_table')
+
+    parser_task = subparsers.add_parser('add_new_url')
+    parser_task.add_argument('--url', type=str, required=True)
+    parser_task.add_argument('--source', type=str)
+    parser_task.add_argument('--name', type=str, required=True)
+    parser_task.add_argument('--extension', type=str, required=True)
+
+    args = parser.parse_args()
+
+    if args.command == 'create_table':
+        print("Created tables")
+    elif args.command == 'add_new_url':
+        print(f"url: {args.url}")
+        print(f"source: {args.source}")
+        print(f"name: {args.name}")
+        print(f"extension: {args.extension}")
+    else:
+        parser.print_help()
 
