@@ -1,4 +1,4 @@
-from utils.download.download import DownloadFile
+from utils.database.core import DatabaseSender, create_all_tables
 
 from argparse import ArgumentParser
 
@@ -6,7 +6,7 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     subparsers = parser.add_subparsers(dest='command')
 
-    parse_create = subparsers.add_parser('create_table')
+    parse_create = subparsers.add_parser('create_tables')
 
     parser_task = subparsers.add_parser('add_new_url')
     parser_task.add_argument('--url', type=str, required=True)
@@ -16,16 +16,11 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.command == 'create_table':
-        print("tables created")
+    if args.command == 'create_tables':
+        create_all_tables()
     elif args.command == 'add_new_url':
-        downloader = DownloadFile(args.url, args.name, args.extension, args.source)
-        downloader.recording()
-
-        # print(f"url: {args.url}")
-        # print(f"source: {args.source}")
-        # print(f"name: {args.name}")
-        # print(f"extension: {args.extension}")
+        downloader = DatabaseSender(args.url, args.name, args.extension, args.source)
+        downloader.create_record()
     else:
         parser.print_help()
 
