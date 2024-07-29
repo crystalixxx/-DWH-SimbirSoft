@@ -16,7 +16,7 @@ class Converter:
 
         self.__validate_functions = {
             is_bool_column: "BOOLEAN",
-            is_int_column: "INT",
+            is_int_column: "BIGINT",
             is_float_column: "DECIMAL",
             is_datetime_column: "TIMESTAMP",
             is_str_column: "VARCHAR"
@@ -52,9 +52,9 @@ class Converter:
                     value = type_
                     break
 
-            self.__types[idx] = (value, is_null, is_unique)
-
             if (primary_key is None) and (not is_null) and is_unique:
                 primary_key = idx
+
+            self.__types[idx] = (value, is_null, idx == primary_key)
 
         return self.__types
