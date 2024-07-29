@@ -1,6 +1,3 @@
-# todo: Реализовать класс / функции для определения типа данных столбца + выделения из всех столбцов primary_key,
-#  если такое возможно
-
 from .validation import *
 
 from collections import defaultdict
