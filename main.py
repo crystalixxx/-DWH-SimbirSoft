@@ -1,4 +1,4 @@
-from utils.database.core import DatabaseSender, create_all_tables
+from utils.database.core import DatabaseWorker, create_all_tables
 
 from argparse import ArgumentParser
 
@@ -19,8 +19,28 @@ if __name__ == '__main__':
     if args.command == 'create_tables':
         create_all_tables()
     elif args.command == 'add_new_url':
-        downloader = DatabaseSender(args.url, args.name, args.extension, args.source)
+        downloader = DatabaseWorker(args.url, args.name, args.extension, args.source)
         downloader.create_record()
     else:
         parser.print_help()
 
+
+# from utils.database.core import DatabaseWorker, create_all_tables
+#
+# if __name__ == '__main__':
+#     while True:
+#         commands = input().split()
+#
+#         if commands[0] == 'create_tables':
+#             create_all_tables()
+#         elif commands[0] == 'add_new_url':
+#             url, resource, name, extension = commands[1:]
+#             downloader = DatabaseWorker(url, resource, name, extension)
+#             downloader.create_record()
+#         else:
+#             print("""
+#             Invalid command. You can use only:
+#             - create_tables
+#             - add_new_url <url> <resource> <table_name> <extension>
+#             """)
+#
