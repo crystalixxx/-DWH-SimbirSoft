@@ -22,7 +22,20 @@ def is_int_column(column):
     if is_bool_column(column):
         return False
 
-    return all(isinstance(elem, int) for elem in column)
+    min_int_value = -2147483648
+    max_int_value = 2147483647
+
+    return all(isinstance(elem, int) and min_int_value <= elem <= max_int_value for elem in column)
+
+
+def is_bigint_column(column):
+    if is_bool_column(column) or is_float_column(column):
+        return False
+
+    min_bigint_value = -9223372036854775808
+    max_bigint_value = 9223372036854775807
+
+    return all(isinstance(elem, int) and min_bigint_value <= elem <= max_bigint_value for elem in column)
 
 
 def is_float_column(column):
