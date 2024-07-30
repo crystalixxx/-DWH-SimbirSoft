@@ -24,9 +24,12 @@ class DownloadFile:
         return heading, rows
 
     def download_json(self):
-        with open(self.__url) as f:
-            data = json.load(f)
+        try:
+            request = requests.get(self.__url)
+            if request.status_code != 200:
+                raise Exception("Sorry, but we can't download some files. Please, check your urls.")
 
+            data = request.json()
             heading = ["id"]
             rows = [[] for _ in range(len(data))]
 
@@ -39,8 +42,11 @@ class DownloadFile:
                         heading.append(key)
 
                     rows[idx].append(item)
-            
-        return heading, rows
+
+            return heading, rows
+
+        except Exception as e:
+            print("Got not json file, please check extension of your file.")
 
     def download(self):
         if self.__extension == 'csv':

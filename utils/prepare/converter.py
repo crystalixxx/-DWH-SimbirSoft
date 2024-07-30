@@ -43,12 +43,12 @@ class Converter:
             for j in range(len(self.__columns)):
                 if isinstance(self.__rows[i][j], bool):
                     continue
-                    
+
                 for type_ in convert_types:
                     try:
                         self.__rows[i][j] = type_(self.__rows[i][j])
                         break
-                    except ValueError:
+                    except Exception:
                         continue
 
     def validate_types(self):
