@@ -19,7 +19,7 @@ if __name__ == '__main__':
     if args.command == 'create_tables':
         create_all_tables()
     elif args.command == 'add_new_url':
-        downloader = DatabaseWorker(args.url, args.name, args.extension, args.source)
+        downloader = DatabaseWorker(args.url, args.source, args.name, args.extension)
         downloader.create_record()
     else:
         parser.print_help()
