@@ -57,3 +57,7 @@ def is_str_column(column):
         return False
 
     return True
+
+
+def is_json_column(column):
+    return all(isinstance(elem, dict) for elem in column)
