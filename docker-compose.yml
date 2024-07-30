@@ -3,6 +3,7 @@ name: postgresql
 services:
   postgres:
     image: postgres
+    container_name: postgresql
     environment:
       POSTGRES_PASSWORD: "admin"
       POSTGRES_USER: "admin"
@@ -12,6 +13,22 @@ services:
       - postgres_volume:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - mynetwork
+
+  data_db_worker:
+    image: simbir_test
+    container_name: data_db_worker
+    depends_on:
+      - postgres
+    networks:
+      - mynetwork
+    stdin_open: true
+    tty: true
 
 volumes:
   postgres_volume:
+
+networks:
+  mynetwork:
+    driver: bridge
