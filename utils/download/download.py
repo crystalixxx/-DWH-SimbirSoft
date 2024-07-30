@@ -1,5 +1,6 @@
 import requests
 import csv
+import json
 
 
 class DownloadFile:
@@ -23,7 +24,23 @@ class DownloadFile:
         return heading, rows
 
     def download_json(self):
-        pass
+        with open(self.__url) as f:
+            data = json.load(f)
+
+            heading = ["id"]
+            rows = [[] for _ in range(len(data))]
+
+            for idx, value in enumerate(data.keys()):
+                rows[idx].append(value)
+
+            for idx, value in enumerate(data.values()):
+                for key, item in value.items():
+                    if idx < 1:
+                        heading.append(key)
+
+                    rows[idx].append(item)
+            
+        return heading, rows
 
     def download(self):
         if self.__extension == 'csv':
