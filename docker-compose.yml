@@ -19,6 +19,8 @@ services:
   data_db_worker:
     image: simbir_test
     container_name: data_db_worker
+    volumes:
+      - ./logs:/app/logs
     depends_on:
       - postgres
     networks:
