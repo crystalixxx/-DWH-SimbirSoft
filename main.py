@@ -10,7 +10,7 @@ if __name__ == '__main__':
     logging.basicConfig(
         level=logging.INFO,
         filename=f"logs/all_logs.log",
-        filemode="w",
+        filemode="a",
         format="%(asctime)s %(levelname)s %(message)s"
     )
 
