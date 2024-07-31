@@ -26,4 +26,4 @@ class UrlHandler:
         if self.__resource == 'mail':
             return self.handle_mail_cloud()
         else:
-            raise ValueError(f'Resource {self.__resource} not supported')
+            raise ValueError(f'Ресурс {self.__resource} не поддерживается.')

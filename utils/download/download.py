@@ -1,6 +1,6 @@
 import requests
 import csv
-import json
+import logging
 
 
 class DownloadFile:
@@ -27,7 +27,8 @@ class DownloadFile:
         try:
             request = requests.get(self.__url)
             if request.status_code != 200:
-                raise Exception("Sorry, but we can't download some files. Please, check your urls.")
+                logging.error(f"Произошла ошибка при скачивании файла для таблицы {self.__table_name}.")
+                raise Exception
 
             data = request.json()
             heading = ["id"]
@@ -46,7 +47,9 @@ class DownloadFile:
             return heading, rows
 
         except Exception as e:
-            print("Got not json file, please check extension of your file.")
+            logging.error(
+                f"Ошибка при скачивании JSON файла: {e}. Убедитесь в том, что расширение файла в действительности JSON.")
+            raise Exception(e)
 
     def download(self):
         if self.__extension == 'csv':
@@ -54,4 +57,4 @@ class DownloadFile:
         elif self.__extension == 'json':
             return self.download_json()
         else:
-            raise Exception("Sorry, but we can't to process this file type now")
+            raise Exception(f"На данный момент не может обработать файл с расширением {self.__extension}")
